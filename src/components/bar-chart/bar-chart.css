@@ -1,0 +1,10 @@
+.components{
+    height: 90vh !important;
+    width: 75vw !important;
+    margin: 3% 0 0 5%;
+}
+select{
+    position: absolute;
+    right: 5%;
+    top: 2%;
+}

@@ -1,0 +1,15 @@
+.sidenav{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 15vw;
+    background: #bf00ff;
+}
+.nav-link{
+    color: #ffffff !important;
+}
+h1{
+    color: #ffffff;
+    padding: 1em;
+    margin: 5% 0 0 5%;
+}
