@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState} from "react";
 import "./line-chart.css";
 import {
   Chart as ChartJS,
@@ -11,7 +11,6 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import { faker } from '@faker-js/faker';
 
 ChartJS.register(
   CategoryScale,
@@ -36,53 +35,111 @@ export const options = {
   },
 };
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: 'Cash',
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-      borderColor: 'rgb(255, 99, 132)',
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    },
-    {
-      label: 'Debit-Card',
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-      borderColor: 'rgb(53, 162, 235)',
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    },
-    {
-      label: 'Transfer',
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-      borderColor: 'rgb(0, 255, 0)',
-      backgroundColor: 'rgba(0, 255, 0, 0.5)',
-    },
-  ],
-};
 const LineChartComponent = () => {
-  function showChartData(type) {
-    const label = 'Cash'
-    const debitCard = 'Debit-Card'
-    const transfer = 'Transfer'
-
-    if(type === 'Cash') {
-      data.datasets[0].data = label;
-    }
-    if(type === 'Debit-Card') {
-      data.datasets[0].data = debitCard;
-    }
-    if(type === 'Transfer') {
-      data.datasets[0].data = transfer;
+  const [ data, setData] = useState({
+    datasets: []
+  })
+  useEffect(() => {
+  setData({
+    labels : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    datasets: [
+      {
+        label: 'Cash',
+        data: [200, 500, 300, 100, 350, 150, 200],
+        borderColor: 'rgb(255, 99, 132)',
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      },
+      {
+        label: 'Debit-Card',
+        data: [400, 600, 200, 350, 250, 100, 300],
+        borderColor: 'rgb(53, 162, 235)',
+        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+      },
+      {
+        label: 'Transfer',
+        data: [100, 400, 500, 250, 350, 150, 400],
+        borderColor: 'rgb(0, 255, 0)',
+        backgroundColor: 'rgba(0, 255, 0, 0.5)',
+      },
+    ],
+  })
+  }, [])
+  const dropdown = document.getElementById('dropdown-basic');
+  if(dropdown) { 
+    dropdown.addEventListener('change', changeChart)
+  }
+  function changeChart() {
+    let value = dropdown.value;
+    console.log(value)
+    if(value === "All") {
+      setData({
+        labels : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        datasets: [
+          {
+            label: 'Cash',
+            data: [200, 500, 300, 100, 350, 150, 200],
+            borderColor: 'rgb(255, 99, 132)',
+            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+          },
+          {
+            label: 'Debit-Card',
+            data: [400, 600, 200, 350, 250, 100, 300],
+            borderColor: 'rgb(53, 162, 235)',
+            backgroundColor: 'rgba(53, 162, 235, 0.5)',
+          },
+          {
+            label: 'Transfer',
+            data: [100, 400, 500, 250, 350, 150, 400],
+            borderColor: 'rgb(0, 255, 0)',
+            backgroundColor: 'rgba(0, 255, 0, 0.5)',
+          },
+        ]
+      })
+    } else if(value === "Cash"){
+      setData({
+        labels : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        datasets: [
+          {
+            label: 'Cash',
+            data: [200, 500, 300, 100, 350, 150, 200],
+            borderColor: 'rgb(255, 99, 132)',
+            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+          },
+        ]
+      })
+    } else if(value === "Debit-card"){
+      setData({
+        labels : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        datasets: [
+          {
+            label: 'Debit-Card',
+            data: [400, 600, 200, 350, 250, 100, 300],
+            borderColor: 'rgb(53, 162, 235)',
+            backgroundColor: 'rgba(53, 162, 235, 0.5)',
+          },
+        ]
+      })
+    } else {
+      setData({
+        labels : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        datasets: [
+          {
+            label: 'Transfer',
+            data: [100, 400, 500, 250, 350, 150, 400],
+            borderColor: 'rgb(0, 255, 0)',
+            backgroundColor: 'rgba(0, 255, 0, 0.5)',
+          },
+        ]
+      })
     }
   }
   return(
     <div className="line-component">
       <select id="dropdown-basic">
-        <option onClick="showChartData('cash')">Cash</option>
-        <option onClick="showChartData('debit-card')">Debit Card </option>
-        <option onClick="showChartData('transfer')">Transfer </option>
+        <option value="All">All</option>
+        <option value="Cash">Cash</option>
+        <option value="Debit-card">Debit Card </option>
+        <option value="Transfer">Transfer </option>
       </select>
       <Line options={options} data={data} className="components"/>
     </div>

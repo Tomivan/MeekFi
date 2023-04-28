@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./bar-chart.css";
 import {
   Chart as ChartJS,
@@ -10,8 +10,6 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import { faker } from '@faker-js/faker';
-
 
 ChartJS.register(
   CategoryScale,
@@ -35,34 +33,39 @@ export const options = {
   },
 };
 
-let labels = ['Football', 'Basketball', 'Tennis', 'Hurdles', 'Baseball', 'Wrestling'];
-
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: 'Number of Students',
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    },
-  ],
-};
-
 const BarChartComponent = () => {
   const dropdown = document.getElementById('dropdown-basic');
+  const [data, setData] = useState({
+    datasets: [],
+   })
+    useEffect(() => {
+      setData({
+        labels: ['Football', 'Basketball', 'Tennis', 'Hurdles', 'Baseball', 'Wrestling'],
+        datasets: [
+          {
+            label: 'Number of Students',
+            data: [500, 300, 100, 150, 200, 400],
+            backgroundColor: 'rgba(53, 162, 235, 0.5)',
+          },
+        ],
+      })
+    }, [])
+
   if(dropdown) { 
     dropdown.addEventListener('change', changeChart)
   }
   function changeChart() {
-    console.log(dropdown.value)
     dropdown.value.split(',')
-    labels = dropdown.value.split(',');
+    setData({
+      labels: dropdown.value.split(',')
+    })
   }
   return(
     <div className="bar-component">
       <select id="dropdown-basic">
-        <option value="'Football', 'Basketball', 'Tennis', 'Baseball'">Balls</option>
-        <option value="'Hurdles', 'Wrestling'">Without Balls </option>
+        <option value="'Football', 'Basketball', 'Tennis', 'Baseball'">Sport with balls</option>
+        <option value="'Hurdles', 'Wrestling'"> Sports without balls </option>
+        <option value="'Football', 'Basketball', 'Tennis', 'Hurdles', 'Baseball', 'Wrestling'">All Sports</option>
       </select>
       <Bar options={options} data={data} className="components"/>
     </div>
